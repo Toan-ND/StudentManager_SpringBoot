@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="/create-student">Create New Employee</a>
+<h1>Students List</h1>
+
+<form>
+    Search by Class Room:
+    <input name="s" type="text"/>
+    <input type="submit" value="Search"/>
+</form>
+<br/>
+<th:block th:if="${message}">
+    <p th:text="${message}"></p>
+</th:block>
+<table border="1">
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Sex</th>
+        <th>Address</th>
+        <th>Birthday</th>
+        <th>Phone</th>
+        <th>Class Room</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    <th:block th:each="x : ${students}">
+        <tr>
+            <td th:text="${x.firstname}"></td>
+            <td th:text="${x.lastname}"></td>
+            <td th:text="${x.sex}"></td>
+            <td th:text="${x.address}"></td>
+            <td th:text="${x.birthday}"></td>
+            <td th:text="${x.phone}"></td>
+            <td th:text="${x.classroom.name}"></td>
+            <td><a th:href="@{/edit-student/__${x.id}__ }">Edit</a></td>
+            <td><a th:href="@{/delete-student/__${x.id}__ }"onclick="return confirm('Are you sure?')">Delete</a></td>
+        </tr>
+    </th:block>
+</table>
+<div>
+    <a th:href="@{'/students'(page=${students.number - 1})}" th:if="${students.hasPrevious()}">Previous</a>
+    <span th:text="${students.number + 1}"></span>/<span th:text="${students.totalPages}"></span>
+    <a th:href="@{'/students'(page=${students.number + 1})}" th:if="${students.hasNext()}">Next</a>
+</div>
+</body>
+</html>
